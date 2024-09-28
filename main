@@ -1,197 +1,286 @@
 import java.util.*;
 
-// ------------------ TO DO -------------------
-// Get the tutorial written
-// get lowest number possible
-// two players
-// play against computer option
-// 10 points to win
-// win = +1 point
-// loss = -0.5 points
-// num range = 1-100 DOUBLE
+public class lowBallGame {
 
-public class lowball {
     public static void main(String[] args) throws Exception {
-
         Scanner input = new Scanner(System.in);
 
-        String tutorial = "tutorialLaunch";
+        String tutorial = "\n                Welcome to Lowball!\n" +
+                          "                The objective is simple: guess the number that the computer is thinking of (between 1 and 100).\n" +
+                          "                The player whose guess is closest to the target number wins the round.\n" +
+                          "                First to 10 points wins the game.\n" +
+                          "                Wins give +1 point, losses deduct -0.5 points.\n" +
+                          "                You can earn golden coins when you lose, which can be used to buy luck boosts.\n" +
+                          "                Each coin spent makes your guess 20% closer to the target number.";
 
         String wantsTutorial = "";
-
         String moveToMenu = "";
-
         boolean ready = false;
-
         boolean inAGame = false;
-
         String playerOrComputer = "";
-
         boolean playerGame = false;
-
         boolean computerGame = false;
-        // DEFINE TUTORIAL YA LAZY BUM
 
-        System.out.println("\nWelcome to Lowball, a game of complete luck, so if you are terrible at games involving any skill whatsoever, this is the game for you!\n");
-        
+        // Welcome message
+        System.out.format("\n                Welcome to Lowball, a game of complete luck!\n");
 
-        
-
-        
+        // Tutorial prompt
         while (!ready) {
-        System.out.println("If you would like a tutorial, type: \"t\" or if you're a chad, type: \"skip\".");
+            System.out.format("                If you would like a tutorial, type: \"t\" or if you're ready, type: \"skip\".\n");
+            wantsTutorial = input.nextLine().trim().toLowerCase();
 
-        wantsTutorial = input.nextLine().trim().toLowerCase();
-
-
-
-        if (wantsTutorial.equals("t")) {
-
-            ready = false;
-
-            System.out.println(tutorial);
-
-            break;
-
-        } else if (wantsTutorial.equals("skip")) {
-
-            ready = true;
-
-            //loading screen thing
-            
-        } else {
-
-            ready = false;
-
-            System.out.println("Try again.");
-
-        }
-    }
-boolean menuEntered = false;
-
-    while (!menuEntered) {
-
-        System.out.println("Type \"r\" when you are ready to conintue");
-
-        moveToMenu = input.nextLine().trim().toLowerCase();
-
-        if (moveToMenu.equals("r")) {
-
-            menuEntered = true;
-
-// i am aware that \n exists 
-
-            System.out.println("Gathering four leaf clovers...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Removing ladders to walk under...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Checking vicinity for black cats...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Finding dice...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Evaluating if games of chance are legal...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Organizing lawyers...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Winning case...");
-            System.out.println("");
-            Thread.sleep(1000);
-            System.out.println("Proceeding to game!");
-            System.out.println("");
-            System.out.println("Entering menu...");
-            System.out.println("");
-            break;
-
-        } else {
-
-            
-            System.out.println("Try again.");
-            
+            if (wantsTutorial.equals("t")) {
+                System.out.format("%s\n", tutorial);
+                ready = true;
+            } else if (wantsTutorial.equals("skip")) {
+                ready = true;
+            } else {
+                System.out.format("                Invalid input. Try again.\n");
+            }
         }
 
-    }
-    System.out.println("Welcome to the menu!");
-    System.out.println("###########################################");
-    System.out.println("#                                         #");
-    System.out.println("# Player VS Player     Player VS Computer #");
-    System.out.println("#                                         #");
-    System.out.println("#    \"Player\"            \"Computer\"      #");
-    System.out.println("#                                         #");
-    System.out.println("###########################################");
+        // Menu prompt
+        boolean menuEntered = false;
+        while (!menuEntered) {
+            System.out.format("                Type \"r\" when you are ready to continue.\n");
+            moveToMenu = input.nextLine().trim().toLowerCase();
 
-    
-
-    while (!inAGame) {
-        playerOrComputer = input.nextLine().trim().toLowerCase();
-        if (playerOrComputer.equals("player")) {
-            inAGame = true;
-            playerGame = true;
-            playerVsPlayer(input);
-            
-        } else if (playerOrComputer.equals("computer")) {
-            inAGame = true;
-            computerGame = true;
-            
-        } else {
-            inAGame = false;
-            System.out.println("Enter \"player\" or \"computer\" ");
+            if (moveToMenu.equals("r")) {
+                // Loading screen simulation
+                loadingScreen();
+                System.out.format("                Proceeding to the game menu!\n");
+                menuEntered = true;
+            } else {
+                System.out.format("                Try again.\n");
+            }
         }
-            
-        } 
-        input.close(); 
+
+        // Game mode selection
+        System.out.format("                ###########################################\n");
+        System.out.format("                # Player VS Player     Player VS Computer #\n");
+        System.out.format("                #    \"Player\"            \"Computer\"      #\n");
+        System.out.format("                ###########################################\n");
+
+        while (!inAGame) {
+            playerOrComputer = input.nextLine().trim().toLowerCase();
+            if (playerOrComputer.equals("player")) {
+                inAGame = true;
+                playerGame = true;
+                playerVsPlayer(input);
+            } else if (playerOrComputer.equals("computer")) {
+                inAGame = true;
+                computerGame = true;
+                playerVsComputer(input);
+            } else {
+                System.out.format("                Enter \"player\" or \"computer\" \n");
+            }
+        }
+
+        input.close();
     }
-    
+
+    // Simulate loading screen
+    public static void loadingScreen() throws InterruptedException {
+        String[] steps = {
+                "                Gathering four leaf clovers...",
+                "                Removing ladders to walk under...",
+                "                Checking vicinity for black cats...",
+                "                Finding dice...",
+                "                Evaluating if games of chance are legal...",
+                "                Organizing lawyers...",
+                "                Winning case..."
+        };
+
+        for (String step : steps) {
+            System.out.format("%s\n", step);
+            Thread.sleep(1000);
+        }
+    }
+
+    // Player vs. Player game logic
     public static void playerVsPlayer(Scanner input) {
+        double player1Score = 0;
+        double player2Score = 0;
 
+        while (player1Score < 10 && player2Score < 10) {
+            System.out.format("                Player 1, enter a number between 1 and 100:\n");
+            double player1Choice = getValidInput(input);
+            System.out.format("                Player 1 has entered their number.\n");
+            System.out.format("                Player 2, enter a number between 1 and 100:\n");
+            double player2Choice = getValidInput(input);
 
+            if (player1Choice < player2Choice) {
+                System.out.format("                Player 1 wins this round!\n");
+                player1Score += 1;
+                player2Score -= 0.5;
+            } else if (player2Choice < player1Choice) {
+                System.out.format("                Player 2 wins this round!\n");
+                player2Score += 1;
+                player1Score -= 0.5;
+            } else {
+                System.out.format("                It's a tie! No points awarded.\n");
+            }
 
-    }
-
-
-    public static void playerVsComputer(Scanner input) {
-        
-        Scanner computerInut = new Scanner(System.in);
-
-        System.out.println("Welcome to Player VS Computer!");
-        System.out.println("Please select your difficulty: ");
-        System.out.println("###########################################");
-        System.out.println("#                                         #");
-        System.out.println("#            Walter Summerford    [0]     #");
-        System.out.println("#                   Easy          [1]     #");
-        System.out.println("#                  Medium         [2]     #");
-        System.out.println("#                   Hard          [3]     #");
-        System.out.println("#                Impossible       [4]     #");
-        System.out.println("#                                         #");
-        System.out.println("###########################################");
-
-        int computerMeanness = -1;
-
-        computerMeanness = computerInut.nextInt();
-
-        switch (computerMeanness) {
-            case 1:
-            System.out.println("");
+            System.out.format("                Scores: Player 1 - %.1f, Player 2 - %.1f\n", player1Score, player2Score);
+            System.out.format("                -----\n");
         }
-        
 
+        if (player1Score >= 10) {
+            System.out.format("                Player 1 wins the game!\n");
+        } else {
+            System.out.format("                Player 2 wins the game!\n");
+        }
     }
 
+    // Player vs. Computer game logic with difficulty levels
+    public static void playerVsComputer(Scanner input) {
+        double playerScore = 0;
+        double computerScore = 0;
+        Random random = new Random();
+        int playerCoins = 0;
 
+        System.out.format("                Welcome to Player VS Computer!\n");
+        System.out.format("                Please select your difficulty: \n");
+        System.out.format("                ###########################################\n");
+        System.out.format("                #                                         #\n");
+        System.out.format("                #            Walter Summerford    [0]     #\n");
+        System.out.format("                #                   Easy          [1]     #\n");
+        System.out.format("                #                  Medium         [2]     #\n");
+        System.out.format("                #                   Hard          [3]     #\n");
+        System.out.format("                #                Impossible       [4]     #\n");
+        System.out.format("                #                                         #\n");
+        System.out.format("                ###########################################\n");
 
-         
-    
+        int difficulty = getValidDifficulty(input);
+
+        while (playerScore < 10 && computerScore < 10) {
+            int targetNumber = random.nextInt(100) + 1; // Random number between 1 and 100
+            int computerGuess = generateComputerGuess(random, difficulty); // Computer guess
+
+            System.out.format("                Enter your guess (between 1 and 100):\n");
+            double playerGuess = getValidInput(input);
+
+            // Ask if the player wants to spend golden coins
+            if (playerCoins > 0) {
+                System.out.format("                You have %d coin(s). Would you like to spend any? (yes/no)\n", playerCoins);
+                String spendDecision = input.next().trim().toLowerCase();
+
+                if (spendDecision.equals("yes")) {
+                    // Prompt how many coins to spend
+                    while (true) {
+                        System.out.format("                How many coins would you like to spend for luck boosts? (1 to %d)\n", playerCoins);
+                        int coinsToSpend = input.nextInt();
+                        
+                        if (coinsToSpend >= 1 && coinsToSpend <= playerCoins) {
+                            for (int i = 0; i < coinsToSpend; i++) {
+                                // Make the player's guess 20% closer to the target number
+                                playerGuess += (targetNumber - playerGuess) * 0.2;
+                            }
+                            playerGuess = Math.round(playerGuess); // Round the guess to the nearest int
+                            playerCoins -= coinsToSpend; // Deduct the coins spent
+                            System.out.format("                Your guess is now %.0f after using %d luck boost(s)!\n", playerGuess, coinsToSpend);
+                            break; // Exit the loop after spending coins
+                        } else {
+                            System.out.format("                Invalid number of coins. Try again.\n");
+                        }
+                    }
+                }
+            }
+
+            System.out.format("                Your guess: %.0f\n", playerGuess);
+            System.out.format("                Computer's guess: %d\n", computerGuess);
+            System.out.format("                Target number: %d\n", targetNumber);
+
+            // Determine who is closest
+            double playerDifference = Math.abs(targetNumber - playerGuess);
+            double computerDifference = Math.abs(targetNumber - computerGuess);
+
+            if (playerDifference < computerDifference) {
+                System.out.format("                You win this round!\n");
+                playerScore += 1;
+                computerScore -= 0.5;
+            } else if (computerDifference < playerDifference) {
+                System.out.format("                Computer wins this round!\n");
+                computerScore += 1;
+                playerCoins++; // Increment coins when the player loses
+                System.out.format("                You earned a golden coin!\n");
+                playerScore -= 0.5;
+            } else {
+                System.out.format("                It's a tie! No points awarded.\n");
+            }
+
+            System.out.format("                Scores: Player - %.1f, Computer - %.1f\n", playerScore, computerScore);
+            System.out.format("                -----\n");
+        }
+
+        if (playerScore >= 10) {
+            System.out.format("                You win the game!\n");
+        } else {
+            System.out.format("                Computer wins the game!\n");
+        }
+    }
+
+    // Method to generate computer guesses based on difficulty
+    public static int generateComputerGuess(Random random, int difficulty) {
+        int computerChoice;
+        switch (difficulty) {
+            case 0: // Walter Summerford - guess between 1 and 100
+                computerChoice = 1 + random.nextInt(100); // 1-100
+                break;
+            case 1: // Easy - guess between 1 and 100
+                computerChoice = 1 + random.nextInt(100); // 1-100
+                break;
+            case 2: // Medium - guess between 1 and 100
+                computerChoice = 1 + random.nextInt(100); // 1-100
+                break;
+            case 3: // Hard - guess between 1 and 50
+                computerChoice = 1 + random.nextInt(50); // 1-50
+                break;
+            case 4: // Impossible - guess always 1
+                computerChoice = 1;
+                break;
+            default:
+                System.out.format("                Invalid difficulty, setting to Medium by default.\n");
+                computerChoice = 1 + random.nextInt(100);
+                break;
+        }
+        return computerChoice;
+    }
+
+    // Method to get valid user input between 1 and 100
+    public static double getValidInput(Scanner input) {
+        double userInput = 0;
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                userInput = input.nextDouble();
+                if (userInput >= 1 && userInput <= 100) {
+                    validInput = true;
+                } else {
+                    System.out.format("                Invalid input. Please enter a number between 1 and 100.\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.format("                Invalid input. Please enter a valid number.\n");
+                input.next(); // Clear invalid input
+            }
+        }
+        return userInput;
+    }
+
+    // Method to get valid difficulty input
+    public static int getValidDifficulty(Scanner input) {
+        int difficulty = -1;
+        while (difficulty < 0 || difficulty > 4) {
+            try {
+                difficulty = input.nextInt();
+                if (difficulty < 0 || difficulty > 4) {
+                    System.out.format("                Invalid difficulty. Please select a number between 0 and 4.\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.format("                Invalid input. Please enter a number between 0 and 4.\n");
+                input.next(); // Clear invalid input
+            }
+        }
+        return difficulty;
+    }
 }
-
-
-
-       
-    
-
-     
-
