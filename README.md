@@ -4,3 +4,6 @@
 If you're playing with a friend don't be that guy and look at their answer, I'll update it to prevent that in the future if it happens enough.
 
 I just realized after committing 1.0 that you can (almost) guarantee a win in difficulties 2 and under if you know a specific strategy. 
+
+
+Submitting this to high school so they let me into AP Stats. I mean, this involves statistics, right?!
